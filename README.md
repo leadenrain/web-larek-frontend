@@ -1,3 +1,5 @@
+https://github.com/leadenrain/web-larek-frontend.git
+
 # Проектная работа "Веб-ларек"
 
 Стек: HTML, SCSS, TS, Webpack
