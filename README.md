@@ -55,25 +55,37 @@ yarn build
 - `category: string` - категория
 - `price: number | null` - цена
 
-**IOrderData**
+**ICatalog**
+Интерфейс для типизации каталога товаров:
+-`products: TProduct[]` - массив товаров
+-`selectedProd: string | null` - выбранный товар
+-`getProduct: (id: string) => TProduct` - метод получения товара по его id
 
-Интерфейс типизирует данные покупателя:
+**IOrder**
+Интерфейс для типизации данных заказа :
 - `payment: 'cash' | 'card'` - способ оплаты заказа
 - `address: string` - адрес доставки
 - `email: string` - электронная почта
 - `phone: string` - номер телефона
+- `validatePaymentForm: () => boolean` - валидация 1 шага заказа
+- `validateContactsForm: () => boolean` - валидация 2 шага заказа
 
-**IBasketData**  
+**IBasket**  
 
 Интерфейс типизирует данные корзины:
 - `items: TProduct[]` - список товаров
-- `total: number` - итоговая сумма
+- `addProduct: (item: TProduct) => void` - добавление товара в корзину
+-`removeProduct: (id: string) => void` - удаление товара из корзины
+-`clear: () => void` - очищение корзины
+-`isInBasket: (id: string) => boolean` - проверка наличия конкретного товара в корзине
+-`getTotal: () => number` - полуение общей уммы корзины
+-`getCount: () => number` - получение количества товаров в корзине
 
 **Данные пользователя в форме заказа**
 
 - `type TPaymentMethod = 'cash' | 'card'` - тип для выбора способа оплаты
-- `type TOrderPayment = Pick<IOrderData, 'payment' | 'address'>` - тип для формы с выбором оплаты и адресом
-- `type TOrderContacts = Pick<IOrderData, 'email' | 'phone'>` - тип для формы с почтой и телефоном
+- `type TOrderPayment = Pick<IOrder, 'payment' | 'address'>` - тип для формы с выбором оплаты и адресом
+- `type TOrderContacts = Pick<IOrder, 'email' | 'phone'>` - тип для формы с почтой и телефоном
 - `type TOrderErrors<T> = Partial<Record<keyof T, string>>` - тип ошибок валидации форм
 
 **Типы данных для работы с сервером**
