@@ -1,102 +1,64 @@
+import { ApiListResponse } from '../components/base/api';
+
+// API
+export interface ILarekAPI {
+	getProductList: () => Promise<TProduct[]>;
+	// getProduct: (id: string) => Promise<TProduct>;
+	postOrder: (order: TOrder) => Promise<TOrderSuccess>;
+}
+
 // карточка товара
-interface IProduct {
+export type TProduct = {
 	id: string;
 	description: string;
 	image: string;
 	title: string;
 	category: string;
 	price: number | null;
-}
-
-// вид карточки на главной странице
-type TProductMain = Pick<
-	IProduct,
-	'id' | 'image' | 'title' | 'category' | 'price'
->;
-
-// вид карточки в корзине
-type TProductBasket = Pick<IProduct, 'id' | 'title' | 'price'>;
+};
 
 // список товаров
-interface IProductList {
-	total: number;
-	items: IProduct[];
+export interface ICatalog {
+	products: TProduct[];
+	selectedProd: string | null;
+	getProduct: (id: string) => TProduct;
 }
 
 // корзина
-interface IBasket {
-	items: TProductBasket[];
-	total: number | null;
+export interface IBasket {
+	items: TProduct[];
+	addProduct: (item: TProduct) => void;
+	removeProduct: (id: string) => void;
+	clear: () => void;
+	isInBasket: (id: string) => boolean;
+	getTotal: () => number;
+	getCount: () => number;
 }
 
-// даные покупателя
-interface IContacts {
+// заказ
+export interface IOrder {
+	payment: TPaymentMethod;
+	address: string;
 	email: string;
 	phone: string;
-	addrress: string;
+	validatePaymentForm: () => boolean;
+	validateContactsForm: () => boolean;
 }
 
-// сформированный заказ
-interface IOrder extends IBasket, IContacts {
-	payment: string;
-}
-
-// данные в модалке "способ оплаты - адрес"
-type TOrderPayment = Pick<IOrder, 'payment' | 'addrress'>;
-
-// способ оплаты
-type TPaymentMethod = 'cash' | 'card';
-
-// данные в модалке "контакты"
-type TOrderContacts = Pick<IOrder, 'email' | 'phone'>;
-
-// заказ - ок
-interface IOrderSuccess {
+export type TOrderSuccess = {
 	id: string;
 	total: number;
-}
-
-// для работы с API
-interface ILarekAPI {
-	getProduct: (id: string) => Promise<IProduct>;
-	getProductList: () => Promise<IProductList>;
-	orderItems(order: IOrder): Promise<IOrderSuccess>;
-}
-
-// орабражение списка товаров на главной
-interface IPage {
-	catalog: HTMLElement[];
-	counter: number;
-}
-
-// модалки
-enum Modals {
-	product = 'modal:product',
-	basket = 'modal:basket',
-	payment = 'modal:payment',
-	contacts = 'modal:contacts',
-	success = 'modal:success',
-}
-
-// отображение модалки
-interface IModal {
-	content: HTMLElement;
-}
-
-// отображение формы
-interface IForm {
-	valid: boolean;
-	errors: string[];
-}
-
-// стор
-type TStateStore = {
-	basket: IBasket;
-	buyerInfo: IContacts;
 };
 
-// состояние модалки для его изменения
-type TModalChange = {
-	previous: Modals;
-	current: Modals;
-};
+export type TPaymentMethod = 'cash' | 'card';
+// данные в модалке "способ оплаты - адрес"
+export type TOrderPayment = Pick<IOrder, 'payment' | 'address'>;
+
+// данные в модалке "контакты"
+export type TOrderContacts = Pick<IOrder, 'email' | 'phone'>;
+
+// тип данных заказа
+export type TOrder = TOrderPayment & TOrderContacts & ApiListResponse<TProduct>;
+
+// тип для ошибок валидации
+export type TOrderErrors<T> = Partial<Record<keyof T, string>>;
