@@ -45,8 +45,9 @@ yarn build
 
 ## Данные и типы данных, используемые в приложении
 
-**IProduct**
-Интерфейс типизирует свойств товара:
+**TProduct**
+
+Тип данных товара:
 - `id: string` - идентификатор
 - `description: string` - описание
 - `image: string` - изображение
@@ -55,18 +56,21 @@ yarn build
 - `price: number | null` - цена
 
 **IOrderData**
+
 Интерфейс типизирует данные покупателя:
 - `payment: 'cash' | 'card'` - способ оплаты заказа
 - `address: string` - адрес доставки
 - `email: string` - электронная почта
 - `phone: string` - номер телефона
 
-**IBasketData**
+**IBasketData**  
+
 Интерфейс типизирует данные корзины:
-- `items: IProduct[]` - список товаров
+- `items: TProduct[]` - список товаров
 - `total: number` - итоговая сумма
 
 **Данные пользователя в форме заказа**
+
 - `type TPaymentMethod = 'cash' | 'card'` - тип для выбора способа оплаты
 - `type TOrderPayment = Pick<IOrderData, 'payment' | 'address'>` - тип для формы с выбором оплаты и адресом
 - `type TOrderContacts = Pick<IOrderData, 'email' | 'phone'>` - тип для формы с почтой и телефоном
@@ -77,7 +81,7 @@ yarn build
 
 - `ApiPostMethods = 'POST' | 'PUT' | 'DELETE'` - типизация API-методов
 
-- `TOrder = TOrderPayment & TOrderContacts & ApiListResponse<IProduct>` - тип сформированного заказа для отправки на сервер
+- `TOrder = TOrderPayment & TOrderContacts & ApiListResponse<TProduct>` - тип сформированного заказа для отправки на сервер
 - `TOrderSuccess = { id: string; total: number }` - тип успешного заказа
 
 ## Архитектура приложения
@@ -114,13 +118,13 @@ yarn build
 
 #### Класс WebLarekAPI
 Класс расширяет базовый класс Api, реализуя интефейс ILarekAPI. Предназначен для работы с сервером приложения с помощью следующих методов:
-- `getProductList` - выполняет запрос для получения каталога товаров, соответствующих интерфейсу IProduct
+- `getProductList` - выполняет запрос для получения каталога товаров, соответствующих интерфейсу TProduct
 - `postOrder` - отправляет сформированный заказ на сервер, возвращая результат операции
 
 #### Класс Catalog
 Класс для работы с каталогом товаров. Реализует интерфейс ICatalog, предоставляя метод получения товара по id и сеттеры для размещения каталога и выбранного товара. В конструктор получает экземпляр брокера событий.
 Свойства класса:
-- `_products: IProduct[] = []` - каталог товаров в виде массива
+- `_products: TProduct[] = []` - каталог товаров в виде массива
 - `_selectedProdId: string | null` - идентификатор товара
 
 #### Класс Basket
