@@ -263,6 +263,7 @@ yarn build
 Класс выводит на экран сообщение об успешном заказе.
 - `_total: HTMLParagraphElement` - общая сумма заказа
 - `button: HTMLButtonElement` - кнопка подтверждения
+- `set total(value: number)` - устанавливает текст успешного оформления заказа
 
 #### Другое
 - `CatalogView` отвечает за вывод каталога товаров на страницу. Для установки товаров есть сеттер: `set catalog(products: HTMLElement[])` .
