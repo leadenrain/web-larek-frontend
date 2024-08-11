@@ -16,7 +16,7 @@ export class Basket implements IBasket {
 	removeProduct(productId: IProduct['id']) {
 		this._items = this._items.filter(({ id }) => id !== productId);
 		if (this.isEmpty()) {
-			this.events.emit('basket: is empty');
+			this.events.emit('basket: removed all products');
 		}
 		this.events.emit<{ products: IProduct[] }>('basket: change', {
 			products: this._items,
