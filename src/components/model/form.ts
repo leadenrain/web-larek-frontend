@@ -1,11 +1,6 @@
 import { IForm, TPaymentMethod, TFields } from '../../types';
+import { ERROR_MESSAGES } from '../../utils/constants';
 import { IEvents } from '../base/events';
-
-const ERROR_MESSAGES: Record<string, string> = {
-	address: 'Введите адрес',
-	email: 'Введите email',
-	phone: 'Введите номер телефона',
-};
 
 export class Form implements IForm {
 	protected _payment = 'card';
