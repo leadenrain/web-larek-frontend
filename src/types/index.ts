@@ -1,9 +1,6 @@
-import { ApiListResponse } from '../components/base/api';
-
 // API
 export interface ILarekAPI {
 	getProductList: () => Promise<IProduct[]>;
-	// getProduct: (id: string) => Promise<TProduct>;
 	postOrder: (order: TOrder) => Promise<TOrderSuccess>;
 }
 
@@ -17,10 +14,10 @@ export interface IProduct {
 	price: number | null;
 }
 
-// список товаров
+// каталог
 export interface ICatalog {
 	products: IProduct[];
-	selectedProd: string | null;
+	selectedProductId: string | null;
 	getProduct: (id: string) => IProduct;
 }
 
@@ -33,32 +30,44 @@ export interface IBasket {
 	isInBasket: (id: string) => boolean;
 	getTotal: () => number;
 	getCount: () => number;
+	isEmpty: () => boolean;
 }
 
-// заказ
-export interface IOrder {
-	payment: TPaymentMethod;
+// формы
+export interface IForm {
+	payment: string;
 	address: string;
 	email: string;
 	phone: string;
-	validatePaymentForm: () => boolean;
-	validateContactsForm: () => boolean;
+	updateOrderFields: (field: keyof TFields, value: string) => void;
+	updateContactsFields: (field: keyof TFields, value: string) => void;
+	checkValidityOrder: () => string | true;
+	checkValidityContacts: () => string | true;
+	clear: () => void;
 }
 
+// тип успешного заказа
 export type TOrderSuccess = {
 	id: string;
 	total: number;
 };
 
+// //тип данных заказа
+// export type TOrderReady = {
+// 	payment: string;
+// 	address: string;
+// 	email: string;
+// 	phone: string;
+// 	items: string[];
+// 	total: number;
+// };
+
 export type TPaymentMethod = 'cash' | 'card';
-// данные в модалке "способ оплаты - адрес"
-export type TOrderPayment = Pick<IOrder, 'payment' | 'address'>;
 
-// данные в модалке "контакты"
-export type TOrderContacts = Pick<IOrder, 'email' | 'phone'>;
+export type TFields = Pick<IForm, 'address' | 'email' | 'phone'>;
 
-// тип данных заказа
-export type TOrder = TOrderPayment & TOrderContacts & ApiListResponse<IProduct>;
+export type TOrderForm = { address: string };
 
-// тип для ошибок валидации
-export type TOrderErrors<T> = Partial<Record<keyof T, string>>;
+export type TContactsForm = { email: string; phone: string };
+
+export type TOrder = TOrderForm & TContactsForm;
