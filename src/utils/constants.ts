@@ -15,3 +15,9 @@ export const categories: Record<string, string> = {
 	дополнительное: 'card__category_additional',
 	кнопка: 'card__category_button',
 };
+
+export const ERROR_MESSAGES: Record<string, string> = {
+	address: 'Введите адрес',
+	email: 'Введите email',
+	phone: 'Введите номер телефона',
+};
