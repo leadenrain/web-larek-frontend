@@ -41,11 +41,11 @@ export class Form implements IForm {
 		const valid = this.checkValidityOrder();
 
 		if (typeof valid === 'string') {
-			this.events.emit('form: error', {
+			this.events.emit('form:error', {
 				error: valid,
 			});
 		} else {
-			this.events.emit('form: valid');
+			this.events.emit('form:valid');
 		}
 	}
 
@@ -55,11 +55,11 @@ export class Form implements IForm {
 		const valid = this.checkValidityContacts();
 
 		if (typeof valid === 'string') {
-			this.events.emit('form: error', {
+			this.events.emit('form:error', {
 				error: valid,
 			});
 		} else {
-			this.events.emit('form: valid');
+			this.events.emit('form:valid');
 		}
 	}
 
@@ -72,11 +72,11 @@ export class Form implements IForm {
 	}
 
 	checkValidityContacts(): true | string {
-		if (this._email.trim().length === 0) {
+		if (!/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(this._email)) {
 			return ERROR_MESSAGES.email;
 		}
 
-		if (this._phone.trim().length === 0) {
+		if (!/^\+?[0-9]{10,14}$/.test(this._phone)) {
 			return ERROR_MESSAGES.phone;
 		}
 
