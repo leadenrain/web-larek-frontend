@@ -18,11 +18,11 @@ export class SuccessView extends Component<TSuccessView> {
 		this.button = this.container.querySelector('.order-success__close');
 
 		this.button.addEventListener('click', () => {
-			this.events.emit('order: success');
+			this.events.emit('order:success');
 		});
 	}
 
 	set message(total: number) {
-		this._message.textContent = `Списано ${total} синапсов`;
+		this.setText(this._message, `Списано ${total} синапсов`);
 	}
 }

@@ -1,6 +1,6 @@
 import { EventEmitter } from './components/base/events';
 import './scss/styles.scss';
-import { WebLarekAPI } from './components/model/API';
+import { WebLarekAPI } from './services/API';
 import { API_URL, CDN_URL } from './utils/constants';
 import { ensureElement } from './utils/utils';
 import { CatalogView } from './components/view/catalogView';
@@ -66,7 +66,7 @@ API.getProductList()
 	});
 
 // вывод каталога
-events.on<IProduct[]>('catalog: get', (products) => {
+events.on<IProduct[]>('catalog:get', (products) => {
 	const productsHTML = products.map((product: IProduct) => {
 		const productView = new ProductCatalogView(productCatalogTemplate, events);
 		return productView.render(product);
@@ -76,12 +76,12 @@ events.on<IProduct[]>('catalog: get', (products) => {
 });
 
 // передача id выбраной карточки в модель каталога
-events.on<Pick<IProduct, 'id'>>('product: select', ({ id }) => {
+events.on<Pick<IProduct, 'id'>>('product:select', ({ id }) => {
 	catalog.selectedProductId = id;
 });
 
 // вывод модалки с полным описанием товара
-events.on<Pick<IProduct, 'id'>>('full card: change', ({ id }) => {
+events.on<Pick<IProduct, 'id'>>('fullCard:change', ({ id }) => {
 	const product = catalog.getProduct(id);
 	const state = basket.isInBasket(id);
 	const productFullView = new ProductFullView(productModalTemplate, events);
@@ -91,23 +91,23 @@ events.on<Pick<IProduct, 'id'>>('full card: change', ({ id }) => {
 });
 
 // добавление товара в корзину
-events.on<Pick<IProduct, 'id'>>('basket: add product', ({ id }) => {
+events.on<Pick<IProduct, 'id'>>('basket:addProduct', ({ id }) => {
 	const product = catalog.getProduct(id);
 	basket.addProduct(product);
 });
 
 // удаление товара из корзины
-events.on<Pick<IProduct, 'id'>>('basket: remove product', ({ id }) => {
+events.on<Pick<IProduct, 'id'>>('basket:removeProduct', ({ id }) => {
 	basket.removeProduct(id);
 });
 
 // закрытие пустой корзины
-events.on('basket: removed all products', () => {
+events.on('basket:removedAllProducts', () => {
 	modalView.close();
 });
 
 // открытие модалки с корзиной
-events.on<{ products: IProduct[] }>('basket: change', ({ products }) => {
+events.on<{ products: IProduct[] }>('basket:change', ({ products }) => {
 	const productsHTML = products.map((product, index) => {
 		const productBasketView = new ProductBasketView(
 			productBasketTemplate,
@@ -123,7 +123,7 @@ events.on<{ products: IProduct[] }>('basket: change', ({ products }) => {
 });
 
 // открытие корзины по клику на иконке
-events.on('basket: open', () => {
+events.on('basket:open', () => {
 	const productsHTML = basket.items.map((product) => {
 		const productBasketView = new ProductBasketView(
 			productBasketTemplate,
@@ -138,13 +138,13 @@ events.on('basket: open', () => {
 });
 
 // открытие пустой корзины
-events.on('basket: is empty', () => {
+events.on('basket:isEmpty', () => {
 	basketView.toggleButton(true);
 	modalView.content = basketView.render();
 });
 
 // вывод формы для заполнения
-events.on('order: start', () => {
+events.on('order:start', () => {
 	form.payment = 'card';
 	orderFormView.clear();
 	contactsFormView.clear();
@@ -153,19 +153,19 @@ events.on('order: start', () => {
 });
 
 // выбран способ оплаты
-events.on<{ payment: TPaymentMethod }>('payment: select', ({ payment }) => {
+events.on<{ payment: TPaymentMethod }>('payment:select', ({ payment }) => {
 	form.payment = payment;
 });
 
 // вывод ошибок в форме
-events.on<{ error: string }>('form: error', ({ error }) => {
+events.on<{ error: string }>('form:error', ({ error }) => {
 	orderFormView.submit = true;
 	orderFormView.error = error;
 	contactsFormView.submit = true;
 	contactsFormView.error = error;
 });
 
-events.on('form: valid', () => {
+events.on('form:valid', () => {
 	orderFormView.submit = false;
 	orderFormView.error = '';
 	contactsFormView.submit = false;
@@ -174,39 +174,43 @@ events.on('form: valid', () => {
 
 // изменения в полях формы
 events.on(
-	'order input: change',
+	'orderInput:change',
 	(data: { field: keyof TOrderForm; value: string }) => {
 		form.updateOrderFields(data.field, data.value);
 	}
 );
 
 events.on(
-	`contacts input: change`,
+	`contactsInput:change`,
 	(data: { field: keyof TContactsForm; value: string }) => {
 		form.updateContactsFields(data.field, data.value);
 	}
 );
 
 // переход к форме Контакты
-events.on('form: next', () => {
+events.on('form:next', () => {
 	modalView.content = contactsFormView.render();
 	modalView.render();
 });
 
 // завершение заказа
-events.on('order: ready', () => {
+events.on('order:ready', () => {
 	const order = {
 		...form.buyerData,
 		total: basket.getTotal(),
 		items: basket.itemsIds,
 	};
-	API.postOrder(order).then((data) => {
-		basket.clear();
-		form.clear();
-		cartView.counter = basket.items.length;
-		successView.message = data.total;
-		modalView.content = successView.render();
-	});
+	API.postOrder(order)
+		.then((data) => {
+			basket.clear();
+			form.clear();
+			cartView.counter = basket.items.length;
+			successView.message = data.total;
+			modalView.content = successView.render();
+		})
+		.catch((error) => {
+			console.log(error);
+		});
 });
 
-events.on('order: success', () => modalView.close());
+events.on('order:success', () => modalView.close());

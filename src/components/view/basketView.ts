@@ -21,7 +21,7 @@ export class BasketView extends Component<TBasketView> {
 		this._button = this.container.querySelector('.basket__button');
 
 		this._button.addEventListener('click', () => {
-			this.events.emit('order: start');
+			this.events.emit('order:start');
 		});
 	}
 
@@ -52,9 +52,9 @@ export class CartView extends Component<TCartView> {
 
 		this.container.addEventListener('click', () => {
 			if (this._counter.textContent === '0') {
-				this.events.emit('basket: is empty');
+				this.events.emit('basket:isEmpty');
 			}
-			this.events.emit('basket: open');
+			this.events.emit('basket:open');
 		});
 	}
 
