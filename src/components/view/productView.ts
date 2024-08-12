@@ -47,7 +47,11 @@ export class ProductView extends Component<IProduct> {
 
 	set category(value: string) {
 		this.setText(this._category, value);
-		this._category?.classList.add(categories[value]);
+		if (this._category) {
+			this.toggleClass(this._category, categories[value], true);
+		}
+
+		// this._category?.classList.add(categories[value]);
 	}
 
 	set price(value: number) {
@@ -60,13 +64,13 @@ export class ProductView extends Component<IProduct> {
 
 	set button(state: boolean) {
 		if (state) {
-			this._button.textContent = 'Удалить из корзины';
+			this.setText(this._button, 'Удалить из корзины');
 			this._button.addEventListener('click', () => {
-				this.events.emit('basket: remove product', { id: this._id });
+				this.events.emit('basket:removeProduct', { id: this._id });
 			});
 		} else {
 			this._button.addEventListener('click', () =>
-				this.events.emit<Pick<IProduct, 'id'>>('basket: add product', {
+				this.events.emit<Pick<IProduct, 'id'>>('basket:addProduct', {
 					id: this._id,
 				})
 			);
@@ -79,7 +83,7 @@ export class ProductCatalogView extends ProductView {
 		super(template, events);
 
 		this.container.addEventListener('click', () =>
-			this.events.emit<Pick<IProduct, 'id'>>('product: select', {
+			this.events.emit<Pick<IProduct, 'id'>>('product:select', {
 				id: this._id,
 			})
 		);
@@ -102,7 +106,7 @@ export class ProductBasketView extends ProductView {
 		this._button = this.container.querySelector('.basket__item-delete');
 
 		this._button.addEventListener('click', () =>
-			this.events.emit('basket: remove product', { id: this._id })
+			this.events.emit('basket:removeProduct', { id: this._id })
 		);
 	}
 

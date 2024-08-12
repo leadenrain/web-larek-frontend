@@ -18,9 +18,9 @@ export class FormView extends Component<TFormView> {
 
 		this.container.addEventListener('submit', (evt) => {
 			evt.preventDefault();
-			this.events.emit(`form: next`);
+			this.events.emit(`form:next`);
 		});
-		this.setDisabled(this._button, true);
+		this.submit = true;
 	}
 
 	set submit(state: boolean) {
@@ -51,17 +51,17 @@ export class OrderFormView extends FormView {
 			const target = evt.target as HTMLInputElement;
 			const field = target.name;
 			const value = target.value;
-			this.events.emit(`order input: change`, { field, value });
+			this.events.emit(`orderInput:change`, { field, value });
 		});
 
 		this._payCard.addEventListener('click', () => {
 			this.togglePayment('card');
-			this.events.emit('payment: select', { payment: 'card' });
+			this.events.emit('payment:select', { payment: 'card' });
 		});
 
 		this._payCash.addEventListener('click', () => {
 			this.togglePayment('cash');
-			this.events.emit('payment: select', { payment: 'cash' });
+			this.events.emit('payment:select', { payment: 'cash' });
 		});
 	}
 
@@ -81,7 +81,7 @@ export class OrderFormView extends FormView {
 
 	clear() {
 		this._addressField.value = '';
-		this._error.textContent = '';
+		this.setText(this._error, '');
 	}
 }
 
@@ -100,12 +100,12 @@ export class ContactsFormView extends FormView {
 			const target = evt.target as HTMLInputElement;
 			const field = target.name;
 			const value = target.value;
-			this.events.emit(`contacts input: change`, { field, value });
+			this.events.emit(`contactsInput:change`, { field, value });
 		});
 
 		this.container.addEventListener('submit', (evt) => {
 			evt.preventDefault();
-			this.events.emit(`order: ready`);
+			this.events.emit(`order:ready`);
 		});
 	}
 
@@ -120,6 +120,6 @@ export class ContactsFormView extends FormView {
 	clear() {
 		this._emailField.value = '';
 		this._phoneField.value = '';
-		this._error.textContent = '';
+		this.setText(this._error, '');
 	}
 }
