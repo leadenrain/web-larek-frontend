@@ -66,7 +66,7 @@ API.getProductList()
 	});
 
 // вывод каталога
-events.on<IProduct[]>('catalog:get', (products) => {
+events.on('catalog:get', (products: IProduct[]) => {
 	const productsHTML = products.map((product: IProduct) => {
 		const productView = new ProductCatalogView(productCatalogTemplate, events);
 		return productView.render(product);
@@ -182,7 +182,7 @@ events.on(
 );
 
 events.on(
-	`contactsInput:change`,
+	'contactsInput:change',
 	(data: { field: keyof TContactsForm; value: string }) => {
 		form.updateContactsFields(data.field, data.value);
 	}
