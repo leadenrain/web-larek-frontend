@@ -50,13 +50,10 @@ export class ProductView extends Component<IProduct> {
 		if (this._category) {
 			this.toggleClass(this._category, categories[value], true);
 		}
-
-		// this._category?.classList.add(categories[value]);
 	}
 
 	set price(value: number) {
 		this.setText(this._price, value ? `${value} синапсов` : 'Бесценно');
-
 		if (!value) {
 			this.setDisabled(this._button, true);
 		}
