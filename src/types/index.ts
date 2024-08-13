@@ -30,7 +30,6 @@ export interface IBasket {
 	isInBasket: (id: string) => boolean;
 	getTotal: () => number;
 	getCount: () => number;
-	isEmpty: () => boolean;
 }
 
 // формы
