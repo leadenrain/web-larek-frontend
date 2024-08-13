@@ -39,7 +39,7 @@ export class Basket implements IBasket {
 		return this._items.length;
 	}
 
-	isEmpty() {
+	private isEmpty() {
 		return this._items.length === 0;
 	}
 
