@@ -117,6 +117,7 @@ events.on<{ products: IProduct[] }>('basket:change', ({ products }) => {
 		return productBasketView.render(product) as HTMLLIElement;
 	});
 	basketView.items = productsHTML;
+	basketView.toggleButton(false);
 	basketView.total = basket.getTotal();
 	cartView.counter = basket.getCount();
 	modalView.content = basketView.render();
