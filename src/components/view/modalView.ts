@@ -29,16 +29,42 @@ export class ModalView extends Component<TModalView> {
 		this._content.replaceChildren(content);
 	}
 
+	private toggleModal(state = true) {
+		this.toggleClass(this.container, 'modal_active', state);
+	}
+
+	private handleEscape = (evt: KeyboardEvent) => {
+		if (evt.key === 'Escape') {
+			this.close();
+		}
+	};
+
 	open() {
-		this.toggleClass(this.container, 'modal_active', true);
+		this.toggleModal();
 		document.body.style.overflow = 'hidden';
+		document.addEventListener('keydown', this.handleEscape);
 		this.events.emit('modal:open');
 	}
 
 	close() {
-		this.toggleClass(this.container, 'modal_active', false);
+		this.toggleModal(false);
 		this.content = null;
 		document.body.style.overflow = '';
+		document.removeEventListener('keydown', this.handleEscape);
+		this.content = null;
 		this.events.emit('modal:close');
 	}
+
+	// open() {
+	// 	this.toggleClass(this.container, 'modal_active', true);
+	// 	document.body.style.overflow = 'hidden';
+	// 	this.events.emit('modal:open');
+	// }
+
+	// close() {
+	// 	this.toggleClass(this.container, 'modal_active', false);
+	// 	this.content = null;
+	// 	document.body.style.overflow = '';
+	// 	this.events.emit('modal:close');
+	// }
 }
