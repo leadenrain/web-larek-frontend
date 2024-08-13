@@ -16,7 +16,9 @@ export class Catalog implements ICatalog {
 		const selectedProduct = this.getProduct(productId);
 		if (selectedProduct) {
 			this._selectedProductId = productId;
-			this.events.emit('fullCard:change', { id: productId });
+			this.events.emit<Pick<IProduct, 'id'>>('fullCard:change', {
+				id: productId,
+			});
 		} else {
 			throw new Error(`Product with ID ${productId} not found`);
 		}

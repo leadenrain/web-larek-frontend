@@ -41,7 +41,7 @@ export class Form implements IForm {
 		const valid = this.checkValidityOrder();
 
 		if (typeof valid === 'string') {
-			this.events.emit('form:error', {
+			this.events.emit<{ error: string }>('form:error', {
 				error: valid,
 			});
 		} else {
@@ -55,7 +55,7 @@ export class Form implements IForm {
 		const valid = this.checkValidityContacts();
 
 		if (typeof valid === 'string') {
-			this.events.emit('form:error', {
+			this.events.emit<{ error: string }>('form:error', {
 				error: valid,
 			});
 		} else {
