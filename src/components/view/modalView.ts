@@ -51,7 +51,6 @@ export class ModalView extends Component<TModalView> {
 		this.content = null;
 		document.body.style.overflow = '';
 		document.removeEventListener('keydown', this.handleEscape);
-		this.content = null;
 		this.events.emit('modal:close');
 	}
 }
