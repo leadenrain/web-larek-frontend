@@ -14,7 +14,7 @@ import {
 	ProductCatalogView,
 	ProductFullView,
 } from './components/view/productView';
-import { IProduct, TPaymentMethod, TOrderForm, TContactsForm } from './types';
+import { IProduct, TEvents } from './types';
 import { ContactsFormView, OrderFormView } from './components/view/formView';
 import { SuccessView } from './components/view/successView';
 
@@ -76,14 +76,14 @@ events.on('catalog:get', (products: IProduct[]) => {
 });
 
 // передача id выбраной карточки в модель каталога
-events.on<Pick<IProduct, 'id'>>('product:select', ({ id }) => {
-	catalog.selectedProductId = id;
+events.on('product:select', (data: TEvents) => {
+	catalog.selectedProductId = data.id;
 });
 
 // вывод модалки с полным описанием товара
-events.on<Pick<IProduct, 'id'>>('fullCard:change', ({ id }) => {
-	const product = catalog.getProduct(id);
-	const state = basket.isInBasket(id);
+events.on('fullCard:change', (data: TEvents) => {
+	const product = catalog.getProduct(data.id);
+	const state = basket.isInBasket(data.id);
 	const productFullView = new ProductFullView(productModalTemplate, events);
 	productFullView.button = state;
 	modalView.content = productFullView.render(product);
@@ -91,14 +91,14 @@ events.on<Pick<IProduct, 'id'>>('fullCard:change', ({ id }) => {
 });
 
 // добавление товара в корзину
-events.on<Pick<IProduct, 'id'>>('basket:addProduct', ({ id }) => {
-	const product = catalog.getProduct(id);
+events.on('basket:addProduct', (data: TEvents) => {
+	const product = catalog.getProduct(data.id);
 	basket.addProduct(product);
 });
 
 // удаление товара из корзины
-events.on<Pick<IProduct, 'id'>>('basket:removeProduct', ({ id }) => {
-	basket.removeProduct(id);
+events.on('basket:removeProduct', (data: TEvents) => {
+	basket.removeProduct(data.id);
 });
 
 // закрытие пустой корзины
@@ -107,8 +107,8 @@ events.on('basket:removedAllProducts', () => {
 });
 
 // открытие модалки с корзиной
-events.on<{ products: IProduct[] }>('basket:change', ({ products }) => {
-	const productsHTML = products.map((product, index) => {
+events.on('basket:change', (data: TEvents) => {
+	const productsHTML = data.products.map((product, index) => {
 		const productBasketView = new ProductBasketView(
 			productBasketTemplate,
 			events
@@ -154,16 +154,16 @@ events.on('order:start', () => {
 });
 
 // выбран способ оплаты
-events.on<{ payment: TPaymentMethod }>('payment:select', ({ payment }) => {
-	form.payment = payment;
+events.on('payment:select', (data: TEvents) => {
+	form.payment = data.payment;
 });
 
 // вывод ошибок в форме
-events.on<{ error: string }>('form:error', ({ error }) => {
+events.on('form:error', (data: TEvents) => {
 	orderFormView.submit = true;
-	orderFormView.error = error;
+	orderFormView.error = data.error;
 	contactsFormView.submit = true;
-	contactsFormView.error = error;
+	contactsFormView.error = data.error;
 });
 
 events.on('form:valid', () => {
@@ -174,19 +174,13 @@ events.on('form:valid', () => {
 });
 
 // изменения в полях формы
-events.on(
-	'orderInput:change',
-	(data: { field: keyof TOrderForm; value: string }) => {
-		form.updateOrderFields(data.field, data.value);
-	}
-);
+events.on('orderInput:change', (data: TEvents) => {
+	form.updateOrderFields(data.field, data.value);
+});
 
-events.on(
-	'contactsInput:change',
-	(data: { field: keyof TContactsForm; value: string }) => {
-		form.updateContactsFields(data.field, data.value);
-	}
-);
+events.on('contactsInput:change', (data: TEvents) => {
+	form.updateContactsFields(data.field, data.value);
+});
 
 // переход к форме Контакты
 events.on('form:next', () => {

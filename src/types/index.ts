@@ -55,8 +55,13 @@ export type TPaymentMethod = 'cash' | 'card';
 
 export type TFields = Pick<IForm, 'address' | 'email' | 'phone'>;
 
-export type TOrderForm = { address: string };
+export type TOrder = { address: string; email: string; phone: string };
 
-export type TContactsForm = { email: string; phone: string };
-
-export type TOrder = TOrderForm & TContactsForm;
+export type TEvents = {
+	id: string;
+	products: IProduct[];
+	payment: TPaymentMethod;
+	field: keyof TOrder;
+	value: string;
+	error: string;
+};
