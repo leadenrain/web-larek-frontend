@@ -51,16 +51,6 @@ export type TOrderSuccess = {
 	total: number;
 };
 
-// //тип данных заказа
-// export type TOrderReady = {
-// 	payment: string;
-// 	address: string;
-// 	email: string;
-// 	phone: string;
-// 	items: string[];
-// 	total: number;
-// };
-
 export type TPaymentMethod = 'cash' | 'card';
 
 export type TFields = Pick<IForm, 'address' | 'email' | 'phone'>;

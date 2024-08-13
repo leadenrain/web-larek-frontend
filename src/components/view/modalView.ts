@@ -54,17 +54,4 @@ export class ModalView extends Component<TModalView> {
 		this.content = null;
 		this.events.emit('modal:close');
 	}
-
-	// open() {
-	// 	this.toggleClass(this.container, 'modal_active', true);
-	// 	document.body.style.overflow = 'hidden';
-	// 	this.events.emit('modal:open');
-	// }
-
-	// close() {
-	// 	this.toggleClass(this.container, 'modal_active', false);
-	// 	this.content = null;
-	// 	document.body.style.overflow = '';
-	// 	this.events.emit('modal:close');
-	// }
 }
