@@ -38,8 +38,8 @@ export interface IForm {
 	address: string;
 	email: string;
 	phone: string;
-	updateOrderFields: (field: keyof TFields, value: string) => void;
-	updateContactsFields: (field: keyof TFields, value: string) => void;
+	updateOrderFields: (field: keyof TOrder, value: string) => void;
+	updateContactsFields: (field: keyof TOrder, value: string) => void;
 	checkValidityOrder: () => string | true;
 	checkValidityContacts: () => string | true;
 	clear: () => void;
@@ -52,8 +52,6 @@ export type TOrderSuccess = {
 };
 
 export type TPaymentMethod = 'cash' | 'card';
-
-export type TFields = Pick<IForm, 'address' | 'email' | 'phone'>;
 
 export type TOrder = { address: string; email: string; phone: string };
 

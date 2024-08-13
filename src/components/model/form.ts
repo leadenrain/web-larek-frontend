@@ -1,4 +1,4 @@
-import { IForm, TPaymentMethod, TFields } from '../../types';
+import { IForm, TPaymentMethod, TOrder } from '../../types';
 import { ERROR_MESSAGES } from '../../utils/constants';
 import { IEvents } from '../base/events';
 
@@ -35,7 +35,7 @@ export class Form implements IForm {
 		};
 	}
 
-	updateOrderFields(field: keyof TFields, value: string) {
+	updateOrderFields(field: keyof TOrder, value: string) {
 		this[field] = value;
 
 		const valid = this.checkValidityOrder();
@@ -49,7 +49,7 @@ export class Form implements IForm {
 		}
 	}
 
-	updateContactsFields(field: keyof TFields, value: string) {
+	updateContactsFields(field: keyof TOrder, value: string) {
 		this[field] = value;
 
 		const valid = this.checkValidityContacts();
