@@ -82,8 +82,8 @@ yarn build
 - `address: string` - адрес доставки
 - `email: string` - электронная почта
 - `phone: string` - номер телефона
-- `updateOrderFields: (field: keyof TFields, value: string) => void` - обновление полей ввода первой формы
-- `updateContactsFields: (field: keyof TFields, value: string) => void` - обновление полей ввода второй формы
+- `updateOrderFields: (field: keyof TOrder, value: string) => void` - обновление полей ввода первой формы
+- `updateContactsFields: (field: keyof TOrder, value: string) => void` - обновление полей ввода второй формы
 - `checkValidityOrder: () => string | true` - проверка валидности первой формы
 - `checkValidityContacts: () => boolean` - проверка валидности второй формы
 - `clear: () => void` - очищение полей ввода
@@ -104,8 +104,12 @@ yarn build
 **Данные пользователя в форме заказа**
 
 - `TPaymentMethod = 'cash' | 'card'` - способ оплаты
-- `TOrderForm = { address: string }` -  поля ввода первой фомы
-- `TContactsForm = { email: string; phone: string }'>` - пля ввода второй формы
+- `TOrder = { address: string; email: string; phone: string }` - поля ввода
+
+**Типы данных для работы с событиями**
+
+- `TEvents = { id: string; products: IProduct[]; payment: TPaymentMethod; field: keyof TOrder; value: string; error: string }` 
+
 
 **Данные для работы с сервером**
                                
