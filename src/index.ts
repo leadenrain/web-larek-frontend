@@ -18,25 +18,24 @@ import { IProduct, TEvents } from './types';
 import { ContactsFormView, OrderFormView } from './components/view/formView';
 import { SuccessView } from './components/view/successView';
 
+// контейнеры
 const cartContainer = ensureElement<HTMLButtonElement>('.header__basket');
 const catalogContainer = ensureElement<HTMLElement>('.gallery');
 const modalContainer = ensureElement<HTMLDivElement>('#modal-container');
 
+// шаблоны
 const productCatalogTemplate =
 	ensureElement<HTMLTemplateElement>('#card-catalog');
-
 const productModalTemplate =
 	ensureElement<HTMLTemplateElement>('#card-preview');
 const productBasketTemplate =
 	ensureElement<HTMLTemplateElement>('#card-basket');
-
 const basketTemplate = ensureElement<HTMLTemplateElement>('#basket');
-
-const formPaymentTemplate = ensureElement<HTMLTemplateElement>('#order');
-const formContactsTemplate = ensureElement<HTMLTemplateElement>('#contacts');
-
+const paymentFormTemplate = ensureElement<HTMLTemplateElement>('#order');
+const contactsFormTemplate = ensureElement<HTMLTemplateElement>('#contacts');
 const orderSuccessTemplate = ensureElement<HTMLTemplateElement>('#success');
 
+// классы
 const API = new WebLarekAPI(CDN_URL, API_URL);
 const events = new EventEmitter();
 
@@ -48,13 +47,16 @@ const cartView = new CartView(cartContainer, events);
 const catalogView = new CatalogView(catalogContainer, events);
 const basketView = new BasketView(basketTemplate, events);
 const modalView = new ModalView(modalContainer, events);
-const contactsFormView = new ContactsFormView(formContactsTemplate, events);
-const orderFormView = new OrderFormView(formPaymentTemplate, events);
+const contactsFormView = new ContactsFormView(contactsFormTemplate, events);
+const orderFormView = new OrderFormView(paymentFormTemplate, events);
 const successView = new SuccessView(orderSuccessTemplate, events);
 
+// для проверки
 events.onAll(({ eventName, data }) => {
 	console.log(eventName, data);
 });
+
+/* основной код */
 
 // получение данных в модель каталога
 API.getProductList()
