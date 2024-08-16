@@ -30,6 +30,7 @@ export interface IBasket {
 	isInBasket: (id: string) => boolean;
 	getTotal: () => number;
 	getCount: () => number;
+	getItemsIds: () => string[];
 }
 
 // формы
@@ -53,7 +54,11 @@ export type TOrderSuccess = {
 
 export type TPaymentMethod = 'cash' | 'card';
 
-export type TOrder = { address: string; email: string; phone: string };
+export type TOrder = {
+	address: string;
+	email: string;
+	phone: string;
+};
 
 export type TEvents = {
 	id: string;
