@@ -115,8 +115,6 @@ yarn build
                                
 - `ApiListResponse<T> = { total: number; items: T[]};` - тип получения данных
 - `ApiPostMethods = 'POST' | 'PUT' | 'DELETE'` - используемые HTTP-методы
-- `TOrder = TOrderForm & TContactsForm` - тип сформированного заказа для отправки на сервер
-- `type TOrderReady = {	payment: string; address: string; email: string; phone: string; items: string[]; total: number; }` - тип данных заказа
 - `TOrderSuccess = { id: string; total: number }` - тип успешного заказа
 
 ## Архитектура приложения
@@ -132,8 +130,7 @@ yarn build
 
 #### Класс Api
 Содержит в себе базовую логику отправки запросов. 
-- `constructor(cdn: string, baseUrl: string, options: RequestInit = {})` - конструктор, используя переданные аргументы, инициирует свойства `baseUrl`(базовый адрес сервера) и `options`(глобальные настройки запросов) экземпляра класса.
-- `cdn` - адрес для получения изображений товара
+- `constructor(cdn: string, baseUrl: string, options: RequestInit = {})` - конструктор, используя переданные аргументы, инициирует свойства `baseUrl`(базовый адрес сервера), `cdn` (адрес для получения изображений товара) и `options`(глобальные настройки запросов) экземпляра класса.
 - `handleResponse<T>: (response: Response) => Promise<T>` - обрабатывает ответ сервера, возвращая промис с объектом ответа
 - `get<T>(uri: string) => Promise<T>` - выполняет GET запрос на переданный в параметрах ендпоинт и возвращает промис с объектом, которым ответил сервер
 - `post<T>(uri: string, data: object, method: ApiPostMethods = 'POST') => Promise<T>` - принимает объект с данными, которые будут переданы в JSON в теле запроса, и отправляет эти данные на ендпоинт переданный как параметр при вызове метода. По умолчанию выполняется `POST` запрос, но метод запроса может быть переопределен заданием третьего параметра при вызове.
@@ -179,14 +176,14 @@ yarn build
 Класс описывает логику работы с корзиной. Реализует интерфейс ICatalog:
 - `_items: IProduct[] = []` - массив товаров, добавленных в корзину
 - `addProduct: (item: IProduct) => void` - добавление товара в корзину
-- `removeProduct(productId: IProduct['id'])` - удаление товара из корзины
+- `removeProduct(id: string)` - удаление товара из корзины
 - `clear: () => void` - очищение корзины
-- `isInBasket: (productId: IProduct['id']) => boolean` - проверка наличия конкретного товара в корзине
+- `isInBasket: (id: string) => boolean` - проверка наличия конкретного товара в корзине
 - `getTotal: () => number` - получение общей суммы товаров в корзине
 - `getCount: () => number` - получение количества товаров в корзине
 - `isEmpty: () => boolean` - приватный метод проверки на пустую корзину
 - `get items: () => IProduct[]` - получение массива товаров, добавленных в корзину
-- `get itemsIds: () => IProduct['id'][]` - получение id товаров, добавленных в корзину
+- `getItemsIds: () => string[]` - получение id товаров, добавленных в корзину
 При получении данных о добавленном/удаленном товаре вызывается событие с передачей id выбранного товара. Брокер инициирует ререндер корзины. При удалении товара дополнительно вызывается событие для закрытия модального окна в случае получения пложительного результата проверки корзины на пустоту.
 
 #### Класс Form
@@ -195,8 +192,8 @@ yarn build
 - `_address = ''` - адрес доставки
 - `_email = ''` - электронная почта
 - `_phone = ''` - номер телефона
-- `updateOrderFields: (field: keyof TFields, value: string) => void` - обновление полей ввода первой формы
-- `updateContactsFields: (field: keyof TFields, value: string) => void` - обновление полей ввода второй формы
+- `updateOrderFields: (field: keyof TOrder, value: string) => void` - обновление полей ввода первой формы
+- `updateContactsFields: (field: keyof TOrder, value: string) => void` - обновление полей ввода второй формы
 - `checkValidityOrder: () => string | true` - проверка валидности полей первой формы
 - `checkValidityContacts: () => string | true` - проверка валидности полей второй формы
 - `clear: () => void` - очищение полей ввода
