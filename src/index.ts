@@ -195,7 +195,7 @@ events.on('order:ready', () => {
 	const order = {
 		...form.buyerData,
 		total: basket.getTotal(),
-		items: basket.itemsIds,
+		items: basket.getItemsIds(),
 	};
 	API.postOrder(order)
 		.then((data) => {
