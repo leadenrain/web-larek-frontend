@@ -39,15 +39,15 @@ export class Basket implements IBasket {
 		return this._items.length;
 	}
 
+	getItemsIds() {
+		return this.items.map((item) => item.id);
+	}
+
 	private isEmpty() {
 		return this._items.length === 0;
 	}
 
 	get items() {
 		return this._items;
-	}
-
-	get itemsIds() {
-		return this.items.map((item) => item.id);
 	}
 }
