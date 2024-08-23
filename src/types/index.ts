@@ -35,7 +35,7 @@ export interface IBasket {
 
 // формы
 export interface IForm {
-	payment: string;
+	payment: TPaymentMethod;
 	address: string;
 	email: string;
 	phone: string;
