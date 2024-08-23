@@ -156,7 +156,7 @@ yarn build
 - `setHidden: (element: HTMLElement) => void` - скрытие указанного элемента
 - `setVisible: (element: HTMLElement) => void` - возврат элементу видимости настранице
 - `setImage: (element: HTMLImageElement, src: string, alt?: string) => void` - установка изображения с альтернативным текстом
-- `render: (data?: Partial<T>) => HTMLElement` - получение корневого DOM-элемента. Отвечает за сохранение полученных в параметре данных в полях компонентов через их сеттеры.
+- `render: (data?: Partial<T>) => HTMLElement` - получение корневого DOM-элемента. 
 
 ### Слой данных
 
