@@ -9,14 +9,14 @@ export class Catalog implements ICatalog {
 
 	set products(products: IProduct[]) {
 		this._products = products;
-		this.events.emit<IProduct[]>('catalog:get', products);
+		this.events.emit('catalog:get', products);
 	}
 
-	set selectedProductId(productId: IProduct['id']) {
+	set selectedProductId(productId: string) {
 		const selectedProduct = this.getProduct(productId);
 		if (selectedProduct) {
 			this._selectedProductId = productId;
-			this.events.emit<Pick<IProduct, 'id'>>('fullCard:change', {
+			this.events.emit('fullCard:change', {
 				id: productId,
 			});
 		} else {

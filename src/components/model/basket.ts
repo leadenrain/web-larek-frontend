@@ -8,17 +8,17 @@ export class Basket implements IBasket {
 
 	addProduct(item: IProduct) {
 		this._items = [...this._items, item];
-		this.events.emit<{ products: IProduct[] }>('basket:change', {
+		this.events.emit('basket:change', {
 			products: this._items,
 		});
 	}
 
-	removeProduct(productId: IProduct['id']) {
+	removeProduct(productId: string) {
 		this._items = this._items.filter(({ id }) => id !== productId);
 		if (this.isEmpty()) {
 			this.events.emit('basket:removedAllProducts');
 		}
-		this.events.emit<{ products: IProduct[] }>('basket:change', {
+		this.events.emit('basket:change', {
 			products: this._items,
 		});
 	}
@@ -27,7 +27,7 @@ export class Basket implements IBasket {
 		this._items = [];
 	}
 
-	isInBasket(productId: IProduct['id']) {
+	isInBasket(productId: string) {
 		return this._items.some((item) => item.id === productId);
 	}
 

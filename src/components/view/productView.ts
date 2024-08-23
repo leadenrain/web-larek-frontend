@@ -67,7 +67,7 @@ export class ProductView extends Component<IProduct> {
 			});
 		} else {
 			this._button.addEventListener('click', () =>
-				this.events.emit<Pick<IProduct, 'id'>>('basket:addProduct', {
+				this.events.emit('basket:addProduct', {
 					id: this._id,
 				})
 			);
@@ -80,7 +80,7 @@ export class ProductCatalogView extends ProductView {
 		super(template, events);
 
 		this.container.addEventListener('click', () =>
-			this.events.emit<Pick<IProduct, 'id'>>('product:select', {
+			this.events.emit('product:select', {
 				id: this._id,
 			})
 		);
