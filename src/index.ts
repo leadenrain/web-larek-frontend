@@ -160,6 +160,10 @@ events.on('payment:select', (data: TEvents) => {
 	form.payment = data.payment;
 });
 
+events.on('payment:set', (data: TEvents) => {
+	orderFormView.togglePayment(data.payment);
+});
+
 // вывод ошибок в форме
 events.on('form:error', (data: TEvents) => {
 	orderFormView.submit = true;

@@ -12,6 +12,7 @@ export class Form implements IForm {
 
 	set payment(method: TPaymentMethod) {
 		this._payment = method;
+		this.events.emit('payment:set', { payment: method });
 	}
 
 	set address(value: string) {
