@@ -51,16 +51,16 @@ export class OrderFormView extends FormView {
 			const target = evt.target as HTMLInputElement;
 			const field = target.name;
 			const value = target.value;
-			this.events.emit(`orderInput:change`, { field, value });
+			this.events.emit('orderInput:change', { field, value });
 		});
 
 		this._payCard.addEventListener('click', () => {
-			this.togglePayment('card');
+			// this.togglePayment('card');
 			this.events.emit('payment:select', { payment: 'card' });
 		});
 
 		this._payCash.addEventListener('click', () => {
-			this.togglePayment('cash');
+			// this.togglePayment('cash');
 			this.events.emit('payment:select', { payment: 'cash' });
 		});
 	}
