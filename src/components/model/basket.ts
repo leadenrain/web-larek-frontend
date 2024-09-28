@@ -17,10 +17,11 @@ export class Basket implements IBasket {
 		this._items = this._items.filter(({ id }) => id !== productId);
 		if (this.isEmpty()) {
 			this.events.emit('basket:removedAllProducts');
+		} else {
+			this.events.emit('basket:open', {
+				products: this._items,
+			});
 		}
-		this.events.emit('basket:change', {
-			products: this._items,
-		});
 	}
 
 	clear() {

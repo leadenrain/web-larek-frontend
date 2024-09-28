@@ -101,6 +101,7 @@ events.on('basket:addProduct', (data: TEvents) => {
 // удаление товара из корзины
 events.on('basket:removeProduct', (data: TEvents) => {
 	basket.removeProduct(data.id);
+	cartView.counter = basket.getCount();
 });
 
 // закрытие пустой корзины
@@ -109,8 +110,14 @@ events.on('basket:removedAllProducts', () => {
 });
 
 // открытие модалки с корзиной
-events.on('basket:change', (data: TEvents) => {
-	const productsHTML = data.products.map((product, index) => {
+events.on('basket:change', () => {
+	cartView.counter = basket.getCount();
+	modalView.close();
+});
+
+// открытие корзины по клику на иконке
+events.on('basket:open', () => {
+	const productsHTML = basket.items.map((product, index) => {
 		const productBasketView = new ProductBasketView(
 			productBasketTemplate,
 			events
@@ -121,29 +128,17 @@ events.on('basket:change', (data: TEvents) => {
 	basketView.items = productsHTML;
 	basketView.toggleButton(false);
 	basketView.total = basket.getTotal();
-	cartView.counter = basket.getCount();
-	modalView.content = basketView.render();
-});
-
-// открытие корзины по клику на иконке
-events.on('basket:open', () => {
-	const productsHTML = basket.items.map((product) => {
-		const productBasketView = new ProductBasketView(
-			productBasketTemplate,
-			events
-		);
-		return productBasketView.render(product) as HTMLLIElement;
-	});
-	basketView.items = productsHTML;
-	basketView.total = basket.getTotal();
 	modalView.content = basketView.render();
 	modalView.open();
 });
 
 // открытие пустой корзины
 events.on('basket:isEmpty', () => {
+	basketView.items = [];
+	basketView.total = basket.getTotal();
 	basketView.toggleButton(true);
 	modalView.content = basketView.render();
+	modalView.open();
 });
 
 // вывод формы для заполнения

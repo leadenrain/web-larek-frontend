@@ -53,8 +53,9 @@ export class CartView extends Component<TCartView> {
 		this.container.addEventListener('click', () => {
 			if (this._counter.textContent === '0') {
 				this.events.emit('basket:isEmpty');
+			} else {
+				this.events.emit('basket:open');
 			}
-			this.events.emit('basket:open');
 		});
 	}
 
